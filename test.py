@@ -4,7 +4,7 @@ from matplotlib.colors import ListedColormap
 import numpy as np
 from pylab import rcParams
 
-# rcParams['figure.figsize'] = 4, 4
+#rcParams['figure.figsize'] = 4, 4
 # Choose colormap
 cmap = plt.cm.viridis
 
@@ -19,56 +19,59 @@ bivariate_cm = [np.array([my_cmap[i], ]*alpha_size) for i in range(cmap_size)]
 for arr in bivariate_cm:
     arr[:, -1] = alpha_val
 
-nrows = 16
+nrows = 256
 x = y = np.linspace(-5, 5, nrows)
 X, Y = np.meshgrid(x, y)
 R = np.sqrt(X**2 + Y**2)
 Z = np.sin(R)/R
 
 dx = abs(Z[0][1] - Z[0][0])
-gx, gy = np.gradient(Z, dx, dx)
 
-my_cmap = ListedColormap(bivariate_cm[0])
+gx = np.load('surface_pressure.npy')
+Z = np.load('air_temperature.npy')
+
+# fig, axes = plt.subplots(nrows=1)
+# axes.imshow(Z, origin='lower')
 
 normz = mpl.colors.Normalize(Z.min(), Z.max())
 normgx = mpl.colors.Normalize(gx.min(), gx.max())
 
-temp = Z
 gx = np.array(normgx(gx)*255, dtype='int64')
 Z = np.array(normz(Z)*255, dtype='int64')
-Z = Z[0:70]
-# fig, axes = plt.subplots(nrows=1)
-# axes.imshow(Z)
+print Z
+print Z.min()
+print Z.max()
 
-def plot_color_gradients(nrows):
-    # return
-    colarr = np.empty(shape=(1, 3) + (4,))
+print gx.min()
+print gx.max()
+colarr = np.ones(shape=Z.shape + (4,))
 
-    fig, axes = plt.subplots(nrows=nrows)
-
-    fig.subplots_adjust(top=0.999, bottom=0.001, left=0.001, right=0.999, hspace = 0, wspace = 0)
-
-    for ax, zarr, gxarr, temparr in zip(axes, Z, gx, temp):
+def plot_color_gradients(nrows, G):
+    jdx = 0
+    for zarr, gxarr in zip(Z, gx):
         idx = 0
         for zele, gxele in zip(zarr, gxarr):
-            print zele, gxele
-
-            lgxele = 255
-            colarr[idx] = bivariate_cm[-zele][gxele]
-            print colarr[idx]
+            # print zele, gxele
+            if G < 0:
+                colarr[jdx][idx] = bivariate_cm[zele][gxele]
+            else:
+                colarr[jdx][idx] = bivariate_cm[zele][G]
+            # print bivariate_cm[zele][gxele]
             idx = idx+1
+        jdx = jdx+1
 
-        my_cmap = ListedColormap(colarr)
 
-        gradient = zarr
-        #gradient = np.linspace(0,1,105)
-        gradient = np.vstack((gradient, gradient))
-        ax.imshow(gradient, aspect='auto', cmap=my_cmap)
-        #break
-    # Turn off *all* ticks & spines, not just the ones with colormaps.
-    for ax in axes:
-        ax.set_axis_off()
+fig, axes = plt.subplots(ncols=3, nrows=2)
 
-plot_color_gradients(nrows)
+axes[0][0].imshow(Z, cmap='viridis')
+axes[0][1].imshow(gx, cmap='viridis')
+
+plot_color_gradients(nrows, 255)
+axes[1][0].imshow(colarr)
+
+plot_color_gradients(nrows, -1)
+axes[1][1].imshow(colarr)
+
+axes[1][2].imshow(bivariate_cm, origin='lower')
 
 plt.show()

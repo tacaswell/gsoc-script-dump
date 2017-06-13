@@ -4,7 +4,7 @@ from matplotlib.colors import ListedColormap
 import numpy as np
 from pylab import rcParams
 
-#rcParams['figure.figsize'] = 4, 4
+# rcParams['figure.figsize'] = 4, 4
 # Choose colormap
 cmap = plt.cm.viridis
 
@@ -24,7 +24,7 @@ x = y = np.linspace(-5, 5, nrows)
 X, Y = np.meshgrid(x, y)
 R = np.sqrt(X**2 + Y**2)
 Z = np.sin(R)/R
-
+# Z = np.sin(X) * np.sin(Y)
 dx = abs(Z[0][1] - Z[0][0])
 gx, gy = np.gradient(Z, dx, dx)
 
@@ -44,7 +44,7 @@ colarr = np.ones(shape=Z.shape + (4,))
 
 def plot_color_gradients(nrows, G):
     jdx = 0
-    for zarr, gxarr in zip(Z, gy):
+    for zarr, gxarr in zip(Z, gx):
         idx = 0
         for zele, gxele in zip(zarr, gxarr):
             # print zele, gxele
@@ -57,14 +57,25 @@ def plot_color_gradients(nrows, G):
         jdx = jdx+1
 
 
-fig, axes = plt.subplots(ncols=3)
+fig, axes = plt.subplots(ncols=2, nrows=2)
 
-plot_color_gradients(nrows, 255)
-axes[0].imshow(colarr)
+axes[0][0].imshow(Z, origin='lower')
+axes[0][0].set_title('plot of Z')
+
+axes[0][1].imshow(gx, origin='lower')
+axes[0][1].set_title('plot of gx')
 
 plot_color_gradients(nrows, -1)
-axes[1].imshow(colarr)
+axes[1][0].imshow(colarr, origin='lower')
+axes[1][0].set_title('plot with 2d cmap')
 
-axes[2].imshow(gy)
+axes[1][1].imshow(bivariate_cm, origin='lower')
+axes[1][1].set_title('colorbar')
 
+for ax in axes.flat:
+    ax.set_xticks([])
+    ax.set_yticks([])
+    # ax.set_axis_off()
+
+plt.tight_layout()
 plt.show()
