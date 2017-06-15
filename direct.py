@@ -12,7 +12,7 @@ cmap = plt.cm.viridis
 cmap_size = cmap.N
 alpha_size = cmap.N
 my_cmap = cmap(np.arange(cmap_size))
-alpha_val = np.linspace(0, 1, alpha_size)
+alpha_val = np.linspace(0.2, 1, alpha_size)
 
 bivariate_cm = [np.array([my_cmap[i], ]*alpha_size) for i in range(cmap_size)]
 
@@ -25,7 +25,7 @@ X, Y = np.meshgrid(x, y)
 R = np.sqrt(X**2 + Y**2)
 Z = np.sin(R)/R
 # Z = np.sin(X) * np.sin(Y)
-dx = abs(Z[0][1] - Z[0][0])
+dx = abs(X[0][1] - X[0][0])
 gx, gy = np.gradient(Z, dx, dx)
 
 my_cmap = ListedColormap(bivariate_cm[0])
@@ -60,14 +60,14 @@ def plot_color_gradients(nrows, G):
 fig, axes = plt.subplots(ncols=2, nrows=2)
 
 axes[0][0].imshow(Z, origin='lower')
-axes[0][0].set_title('plot of Z')
+axes[0][0].set_title('plot of Z = sin(R)/R where R = sqrt(X^2 + Y^2)')
 
 axes[0][1].imshow(gx, origin='lower')
-axes[0][1].set_title('plot of gx')
+axes[0][1].set_title('plot of gradient of gx = sin(R)/R with X')
 
 plot_color_gradients(nrows, -1)
 axes[1][0].imshow(colarr, origin='lower')
-axes[1][0].set_title('plot with 2d cmap')
+axes[1][0].set_title('plot with 2d cmap with alpha varying with gx')
 
 axes[1][1].imshow(bivariate_cm, origin='lower')
 axes[1][1].set_title('colorbar')
