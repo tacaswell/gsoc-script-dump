@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib.colors import ListedColormap
 import numpy as np
-from pylab import rcParams
 import matplotlib.colors as colors
 # rcParams['figure.figsize'] = 4, 4
 # Choose colormap
@@ -64,6 +63,7 @@ for aa in range(256):
         bivariate_cm[aa][bb][1] = temp[1]
         bivariate_cm[aa][bb][2] = temp[2]
 """
+
 nrows = 256
 x = y = np.linspace(-5, 5, nrows)
 X, Y = np.meshgrid(x, y)

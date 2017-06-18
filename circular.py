@@ -59,20 +59,22 @@ def plot_color_gradients(nrows, G):
         jdx = jdx+1
 
 
-fig, axes = plt.subplots(ncols=2, nrows=2)
+fig, axes = plt.subplots(ncols=2, nrows=1)
 
+"""
 axes[0][0].imshow(Z, origin='lower')
 axes[0][0].set_title('plot of Z = sin(R)/R where R = sqrt(X^2 + Y^2)')
 
 axes[0][1].imshow(gx, origin='lower', cmap='PiYG')
 axes[0][1].set_title('plot of gradient of sinc varying with X')
+"""
 
 plot_color_gradients(nrows, -1)
-axes[1][0].imshow(colarr, origin='lower')
-axes[1][0].set_title('plot with 2d cmap with alpha varying with gx')
+axes[0].imshow(colarr, origin='lower')
+axes[0].set_title('alpha varying with sin(R)/R')
 
-axes[1][1].imshow(bivariate_cm, origin='lower')
-axes[1][1].set_title('colorbar')
+axes[1].imshow(bivariate_cm, origin='lower')
+axes[1].set_title('cmocean.phase and alpha')
 
 for ax in axes.flat:
     ax.set_xticks([])
