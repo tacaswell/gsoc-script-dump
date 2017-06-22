@@ -111,7 +111,7 @@ axes[0][1].set_title('plot of gradient of gx = sin(R)/R with X')
 
 plot_color_gradients(nrows, -1)
 axes[0].imshow(colarr, origin='lower')
-axes[0].set_title('plot with 2d cmap with alpha varying with gx')
+axes[0].set_title('sin(R)/R plot with 2d cmap')
 
 axes[1].imshow(bivariate_cm, origin='lower')
 axes[1].set_title('colorbar')

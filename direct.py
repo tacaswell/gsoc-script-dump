@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib.colors import ListedColormap
 import numpy as np
-from pylab import rcParams
 
 # rcParams['figure.figsize'] = 4, 4
 # Choose colormap
@@ -19,7 +18,7 @@ bivariate_cm = [np.array([my_cmap[i], ]*alpha_size) for i in range(cmap_size)]
 for arr in bivariate_cm:
     arr[:, -1] = alpha_val
 
-nrows = 16
+nrows = 256
 x = y = np.linspace(-5, 5, nrows)
 X, Y = np.meshgrid(x, y)
 R = np.sqrt(X**2 + Y**2)
